@@ -2,10 +2,14 @@ const mongoose = require('mongoose')
 
 
 const orderSchema = new mongoose.Schema({
-    name:String,
-    email:String,
-    password:String,
-    createdAt:{
+    user:{
+        type:String,
+        default:'Anas',
+    },
+    products:{
+        type:Array,
+    },
+    createAt:{
         type:Date,
         default:Date.now()
     }

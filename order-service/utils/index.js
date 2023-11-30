@@ -24,7 +24,7 @@ module.exports.PublishMessage=async(channel,binding_key,message)=>{
 }
 
 
-module.exports.SubscribeMessage = async(channel)=>{
+module.exports.SubscribeMessage = async(channel,service)=>{
     try{
         const appQueue = await channel.assertQueue('ORDER_QUEUE');
         channel.bindQueue(appQueue.queue,'AUTH-MERN','ORDER-SERVICE');
@@ -32,7 +32,7 @@ module.exports.SubscribeMessage = async(channel)=>{
         channel.consume(appQueue.queue , data=>{
             console.log("Recieved data in order service");
             console.log(data.content.toString());
-            // service.SubscribeEvents(data.content.toString());
+            service.SubscribeEvents(data.content.toString());
             channel.ack(data);
         })
     }catch(err){

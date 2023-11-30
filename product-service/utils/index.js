@@ -22,7 +22,8 @@ module.exports.PublishMessage=async(channel,binding_key,message)=>{
     }
 }
 
-module.exports.SubscribeMessage = async(channel)=>{
+
+module.exports.SubscribeMessage = async(channel,service)=>{
     try{
         const appQueue = await channel.assertQueue('AUTH-QUEUE');
         channel.bindQueue(appQueue.queue,'AUTH-MERN','PRODUCT-SERVICE')
@@ -30,7 +31,7 @@ module.exports.SubscribeMessage = async(channel)=>{
         channel.consume(appQueue.queue , data=>{
           console.log("Recieved data in Product service ");
           console.log(data.content.toString());
-        //service.SubscribeEvents(data.content.toString());
+          service.SubscribeEvents(data.content.toString());
           channel.ack(data);
         })
     }catch(err){

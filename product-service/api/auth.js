@@ -1,9 +1,11 @@
 const ProductService = require("../service/ProductService");
 const isAuthenticated = require('../isAuthenticated');
+const {SubscribeMessage} = require('../utils')
 
 module.exports =(app,channel)=>{
     
     const service = new ProductService();
+    SubscribeMessage(channel,service)
     //Create product
     //Buy a product
 

@@ -1,5 +1,4 @@
 const {ProductModel} = require('../mongodb');
-const jwt = require('jsonwebtoken');
 const {PublishMessage} = require('../utils')
 
 
@@ -13,14 +12,32 @@ class ProductService{
         })
         await newProduct.save();
         return newProduct
-
     }
 
     async Buy(ids,channel){
         const products = await ProductModel.find({_id:{$in:ids}})
-        PublishMessage(channel,'ORDER-SERVICE' , products);
+        let payload = {
+            event:'PLACE-ORDER',
+            data:products,
+        }
+        await PublishMessage(channel,'ORDER-SERVICE' , JSON.stringify(payload));
+        return payload;
     }
+
     
+    async SubscribeEvents(payload){
+        payload = JSON.parse(payload);
+        const {event , data} = payload;
+
+        // switch(event){
+        //     case 'ORDER-SUCCESS':
+        //         this.successOrder(data);
+        //         break;
+        //     default:
+        //         break;
+        // }
+
+    }
 }
 
 module.exports = ProductService;
